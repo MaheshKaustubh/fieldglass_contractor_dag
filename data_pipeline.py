@@ -3,7 +3,6 @@ from airflow.decorators import dag, task
 from airflow import DAG
 from airflow.operators.python import PythonVirtualenvOperator, BranchPythonOperator, ShortCircuitOperator
 from pathlib import Path
-from snowflake.snowpark.session import Session, FileOperation
 import subprocess
 import os 
 
