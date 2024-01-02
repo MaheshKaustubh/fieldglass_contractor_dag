@@ -106,7 +106,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to download file from SFTP',
-    schedule='30 7 * * *',
+    schedule='45 7 * * *',
     catchup=False
 ) as dag:
     WDCheck=ShortCircuitOperator(
