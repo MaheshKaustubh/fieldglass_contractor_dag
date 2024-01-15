@@ -67,6 +67,7 @@ def download_file_from_sftp():
     df['Start Date'] = pd.to_datetime(df['Start Date'], errors='coerce').dt.strftime('%Y-%m-%d').replace('NaT','')
     df['Safe End Date'] = pd.to_datetime(df['Safe End Date'], errors='coerce').dt.strftime('%Y-%m-%d').replace('NaT','')
     df['Contract End Date'] = pd.to_datetime(df['Contract End Date'], errors='coerce').dt.strftime('%Y-%m-%d').replace('NaT','')
+    df = df[~df['Contingent/SOW Worker Bill Rate [ST/Day (Daily)/Day]'].apply(lambda x: pd.notna(x) and str(x).startswith('Macro Ran:'))]
 
     df['Snapshot_Date'] = pd.Timestamp.today().strftime('%Y-%m-%d')
     df['Primary Cost Center Code'] = df['Primary Cost Center Code'].astype(str)
@@ -126,7 +127,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to load file to Snowflake from SFTP',
-    schedule_interval='7 9 * * *',
+    schedule_interval='40 13 * * *',
     catchup=False,
 ) as dag:
     WDcheck = ShortCircuitOperator(
