@@ -24,7 +24,10 @@ default_args = {
 
 def check():
     from datetime import datetime
-    wds=[datetime(2024,1,15).date(), datetime(2024, 1, 9).date(), datetime(2024, 1, 10).date(), datetime(2023, 12, 23).date(), datetime(2023, 12, 24).date(), datetime(2023,12,17).date(), datetime(2023,12,18).date(),datetime(2023,12,19).date()]
+    wds=[datetime(2024,1,22).date(),datetime(2024,2,1).date(), datetime(2024, 3, 1).date(), datetime(2024, 4, 1).date(),
+        datetime(2024, 5, 2).date(), datetime(2024, 6, 3).date(), datetime(2024, 7, 1).date(),
+        datetime(2024, 8, 1).date(), datetime(2024, 9, 2).date(), datetime(2024, 10, 1).date(),
+        datetime(2024, 4, 11).date(), datetime(2024, 12, 2).date()]
     if(datetime.now().date() in wds):
         return True
     else:
@@ -38,25 +41,73 @@ def download_file_from_sftp():
     import snowflake.connector
     import pandas as pd 
 
+    #SFTP Crediantials 
     host = 'sftp.ebs.thomsonreuters.com'
     port = 22
     username = 'PSarchFGSFTP'
     password = 'geT4anKu'
     remote_path = '/Fieldglass'
+    archive_path = '/Fieldglass_Archived'
     buffer = BytesIO()
 
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(hostname=host, username=username, password=password,allow_agent=False)
+    ssh_client.connect(hostname=host, username=username, password=password, allow_agent=False)
     sftp_client = ssh_client.open_sftp()
-
+    
     sftp_client.chdir(remote_path)
+
+    
+    #Loopin around to get latest file based on timestamp.  
     for f in sorted(sftp_client.listdir_attr(), key=lambda k: k.st_mtime, reverse=True):
         print(f.filename)
         down = sftp_client.getfo(f.filename, buffer)
         print(down)
         print("File downloaded successfully!")
-        break
+
+        # Move the downloaded file to the "Archived" folder
+        new_path = f"{archive_path}/{f.filename}"
+        sftp_client.rename(f.filename, new_path)
+        print(f"File moved to '{new_path}'")
+
+        break  # Stop after processing the latest file
+
+    # Function to remove file from archived folder.
+    from datetime import datetime
+    def archive_file_remove():
+        wds=[datetime(2024,1,22).date(),datetime(2024,2,1).date(), datetime(2024, 3, 1).date(), datetime(2024, 4, 1).date(),
+             datetime(2024, 5, 2).date(), datetime(2024, 6, 3).date(), datetime(2024, 7, 1).date(),
+             datetime(2024, 8, 1).date(), datetime(2024, 9, 2).date(), datetime(2024, 10, 1).date(),
+             datetime(2024, 4, 11).date(), datetime(2024, 12, 2).date()]
+        if(datetime.now().date() in wds):
+            host = 'sftp.ebs.thomsonreuters.com'
+            port = 22
+            username = 'PSarchFGSFTP'
+            password = 'geT4anKu'
+            archive_path = '/Fieldglass_Archived'
+
+            ssh_client = paramiko.SSHClient()
+            ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh_client.connect(hostname=host, username=username, password=password, allow_agent=False)
+            sftp_client = ssh_client.open_sftp()
+
+            sftp_client.chdir(archive_path)
+
+            files = sorted(sftp_client.listdir_attr(), key=lambda k: k.st_mtime, reverse=True)
+            if len(files) >= 2:
+                second_latest_file = files[1]
+                print(f"Removing second latest file: {second_latest_file.filename}")
+                sftp_client.remove(second_latest_file.filename)
+                print(f"File '{second_latest_file.filename}' removed from the SFTP server.")
+
+            sftp_client.close()
+            ssh_client.close()
+        else:
+            return False
+    
+    func_call = archive_file_remove()
+
+
     # Close the SFTP session and SSH connection
     sftp_client.close()
     ssh_client.close()
@@ -107,7 +158,7 @@ def download_file_from_sftp():
         account="a206448_prod.us-east-1",
         warehouse="A208043_FINANCE_STAGING_DEV_MDS_WH",
         database="MYDATASPACE",
-        password="612NIxX0Df9kzaP1AcO8",
+        password="ABxQQafZaW21YS3GkeD4",
         schema="A208043_FINANCE_STAGING_DEV"
         )
 
