@@ -129,7 +129,10 @@ def download_file_from_sftp():
         return pd.to_numeric(column.replace(',', '', regex=True), errors='coerce', downcast='integer')
 
 
-    columns_to_clean = ['Tenure','Tenure based upon Security ID', 'Projected Tenure', 'Profile Worker Bill Rate','Contingent/SOW Worker Bill Rate [ST/Hr]','Contingent/SOW Worker Bill Rate [Monthly Base Salary/MO]','Contingent/SOW Worker Bill Rate [PWD Standard/Day]']
+    columns_to_clean = ['Tenure','Tenure based upon Security ID', 'Projected Tenure', 
+                    'Profile Worker Bill Rate','Contingent/SOW Worker Bill Rate [ST/Hr]','Contingent/SOW Worker Bill Rate [Daily Standard/Day]',
+                    'Contingent/SOW Worker Bill Rate [Hourly Standard/Hr]','Contingent/SOW Worker Bill Rate [Monthly Base Salary/MO]',
+                    'Contingent/SOW Worker Bill Rate [PWD Stand By/On Call/Hr]','Contingent/SOW Worker Bill Rate [PWD Standard/Day]','Contingent/SOW Worker Bill Rate [ST/Day (Daily)/Day]']
     df[columns_to_clean] = df[columns_to_clean].apply(clean_numeric_column)
     df.columns = map(lambda x: str(x).upper(), df.columns)
     df.transform(lambda x: x.fillna('') if x.dtype == 'object' else x.fillna(0))
@@ -186,7 +189,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to load file to Snowflake from SFTP',
-    schedule_interval='20 6 * * *',
+    schedule_interval='20 7 * * *',
     catchup=False,
 ) as dag:
     WDcheck = ShortCircuitOperator(
