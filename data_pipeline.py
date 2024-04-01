@@ -24,10 +24,18 @@ default_args = {
 
 def check():
     from datetime import datetime
-    wds=[datetime(2024,3,27).date(), datetime(2024, 2, 19).date(), datetime(2024, 2, 26).date(),
-        datetime(2024, 5, 2).date(), datetime(2024, 6, 3).date(), datetime(2024, 7, 1).date(),
-        datetime(2024, 8, 1).date(), datetime(2024, 9, 2).date(), datetime(2024, 10, 1).date(),
-        datetime(2024, 4, 11).date(), datetime(2024, 12, 2).date()]
+    wds=[datetime(2024, 4, 8).date(), datetime(2024, 4, 15).date(), datetime(2024, 4, 22).date(),
+        datetime(2024, 4, 29).date(), datetime(2024, 5, 6).date(), datetime(2024, 5, 13).date(),
+        datetime(2024, 5, 20).date(), datetime(2024, 5, 27).date(), datetime(2024, 6, 3).date(),
+        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 24).date(), 
+        datetime(2024, 7, 8).date(), datetime(2024, 7, 15).date(), datetime(2024, 7, 22).date(), 
+        datetime(2024, 7, 29).date(), datetime(2024, 8, 5).date(), datetime(2024, 8, 12).date(), 
+        datetime(2024, 8, 19).date(), datetime(2024, 8, 26).date(), datetime(2024, 9, 9).date(), 
+        datetime(2024, 9, 16).date(), datetime(2024, 9, 23).date(), datetime(2024, 9, 30).date(),
+        datetime(2024, 10, 7).date(), datetime(2024, 10, 14).date(), datetime(2024, 10, 21).date(),
+        datetime(2024, 10, 28).date(), datetime(2024, 11, 11).date(), datetime(2024, 11, 18).date(),
+        datetime(2024, 11, 25).date(), datetime(2024, 12, 9).date(), datetime(2024, 12, 16).date(),
+        datetime(2024, 12, 23).date(), datetime(2024, 12, 30).date()]
     if(datetime.now().date() in wds):
         return True
     else:
@@ -77,10 +85,18 @@ def download_file_from_sftp():
     # Function to remove file from archived folder.
     def archive_file_remove():
         from datetime import datetime
-        wds=[datetime(2024,1,22).date(),datetime(2024, 3, 22).date(), datetime(2024, 4, 1).date(),
-             datetime(2024, 5, 2).date(), datetime(2024, 6, 3).date(), datetime(2024, 7, 1).date(),
-             datetime(2024, 8, 1).date(), datetime(2024, 9, 2).date(), datetime(2024, 10, 1).date(),
-             datetime(2024, 4, 11).date(), datetime(2024, 12, 2).date()]
+        wds=[datetime(2024, 4, 8).date(), datetime(2024, 4, 15).date(), datetime(2024, 4, 22).date(),
+        datetime(2024, 4, 29).date(), datetime(2024, 5, 6).date(), datetime(2024, 5, 13).date(),
+        datetime(2024, 5, 20).date(), datetime(2024, 5, 27).date(), datetime(2024, 6, 3).date(),
+        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 24).date(), 
+        datetime(2024, 7, 8).date(), datetime(2024, 7, 15).date(), datetime(2024, 7, 22).date(), 
+        datetime(2024, 7, 29).date(), datetime(2024, 8, 5).date(), datetime(2024, 8, 12).date(), 
+        datetime(2024, 8, 19).date(), datetime(2024, 8, 26).date(), datetime(2024, 9, 9).date(), 
+        datetime(2024, 9, 16).date(), datetime(2024, 9, 23).date(), datetime(2024, 9, 30).date(),
+        datetime(2024, 10, 7).date(), datetime(2024, 10, 14).date(), datetime(2024, 10, 21).date(),
+        datetime(2024, 10, 28).date(), datetime(2024, 11, 11).date(), datetime(2024, 11, 18).date(),
+        datetime(2024, 11, 25).date(), datetime(2024, 12, 9).date(), datetime(2024, 12, 16).date(),
+        datetime(2024, 12, 23).date(), datetime(2024, 12, 30).date()]
         if(datetime.now().date() in wds):
             host = 'sftp.ebs.thomsonreuters.com'
             port = 22
@@ -189,7 +205,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to load file to Snowflake from SFTP',
-    schedule_interval='10 13 * * *',
+    schedule_interval='45 2 * * *',
     catchup=False,
 ) as dag:
     WDcheck = ShortCircuitOperator(
