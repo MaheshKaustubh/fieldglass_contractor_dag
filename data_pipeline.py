@@ -9,6 +9,7 @@ import logging
 from airflow.sensors.python import PythonSensor
 import pandas as pd
 import snowflake.connector
+import paramiko
 
 
 default_args = {
