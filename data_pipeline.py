@@ -9,7 +9,6 @@ import logging
 from airflow.sensors.python import PythonSensor
 import pandas as pd
 import snowflake.connector
-import paramiko
 
 
 default_args = {
@@ -216,7 +215,7 @@ with DAG(
     
     read_write_snow= PythonVirtualenvOperator(
         task_id='read_write_snow',
-        requirements=["snowflake-connector-python","pandas"],
+        requirements=["snowflake-connector-python","pandas", "paramiko"],
         python_callable=download_file_from_sftp,
         system_site_packages=True,
         provide_context=True
