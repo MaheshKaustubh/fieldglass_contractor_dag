@@ -88,7 +88,7 @@ def download_file_from_sftp():
         wds=[datetime(2024, 4, 8).date(), datetime(2024, 4, 15).date(), datetime(2024, 4, 22).date(),
         datetime(2024, 4, 29).date(), datetime(2024, 5, 6).date(), datetime(2024, 5, 13).date(),
         datetime(2024, 5, 20).date(), datetime(2024, 5, 27).date(), datetime(2024, 6, 3).date(),
-        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 24).date(), 
+        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 26).date(), 
         datetime(2024, 7, 8).date(), datetime(2024, 7, 15).date(), datetime(2024, 7, 22).date(), 
         datetime(2024, 7, 29).date(), datetime(2024, 8, 5).date(), datetime(2024, 8, 12).date(), 
         datetime(2024, 8, 19).date(), datetime(2024, 8, 26).date(), datetime(2024, 9, 9).date(), 
@@ -178,7 +178,7 @@ def download_file_from_sftp():
     response = client.get_secret_value(SecretId='arn:aws:secretsmanager:us-east-1:573491702041:secret:a206529-MDS-CONSREVENUE-5k48RX', VersionStage='AWSCURRENT')
 
     secrets=json.loads(response['SecretString'])
-    # print(secrets)
+    print(secrets)
     # Establish a connection to your Snowflake instance
     conn = snowflake.connector.connect(
         user=str(secrets["user"]),
@@ -205,7 +205,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to load file to Snowflake from SFTP',
-    schedule_interval='55 8 * * *',
+    schedule_interval='45 9 * * *',
     catchup=False,
 ) as dag:
     WDcheck = ShortCircuitOperator(
@@ -232,7 +232,7 @@ with DAG(
         response = client.get_secret_value(SecretId='arn:aws:secretsmanager:us-east-1:573491702041:secret:a206529-MDS-CONSREVENUE-5k48RX', VersionStage='AWSCURRENT')
 
         secrets=json.loads(response['SecretString'])
-        # print(secrets)
+        print(secrets)
         try:
             conn = snowflake.connector.connect(
                 user=str(secrets["user"]),
