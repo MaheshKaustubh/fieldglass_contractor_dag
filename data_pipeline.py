@@ -27,7 +27,7 @@ def check():
     wds=[datetime(2024, 4, 8).date(), datetime(2024, 4, 15).date(), datetime(2024, 4, 22).date(),
         datetime(2024, 4, 29).date(), datetime(2024, 5, 6).date(), datetime(2024, 5, 13).date(),
         datetime(2024, 5, 20).date(), datetime(2024, 5, 27).date(), datetime(2024, 6, 3).date(),
-        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 24).date(), 
+        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 27).date(), 
         datetime(2024, 7, 8).date(), datetime(2024, 7, 15).date(), datetime(2024, 7, 22).date(), 
         datetime(2024, 7, 29).date(), datetime(2024, 8, 5).date(), datetime(2024, 8, 12).date(), 
         datetime(2024, 8, 19).date(), datetime(2024, 8, 26).date(), datetime(2024, 9, 9).date(), 
@@ -88,7 +88,7 @@ def download_file_from_sftp():
         wds=[datetime(2024, 4, 8).date(), datetime(2024, 4, 15).date(), datetime(2024, 4, 22).date(),
         datetime(2024, 4, 29).date(), datetime(2024, 5, 6).date(), datetime(2024, 5, 13).date(),
         datetime(2024, 5, 20).date(), datetime(2024, 5, 27).date(), datetime(2024, 6, 3).date(),
-        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 26).date(), 
+        datetime(2024, 6, 10).date(), datetime(2024, 6, 17).date(), datetime(2024, 6, 27).date(), 
         datetime(2024, 7, 8).date(), datetime(2024, 7, 15).date(), datetime(2024, 7, 22).date(), 
         datetime(2024, 7, 29).date(), datetime(2024, 8, 5).date(), datetime(2024, 8, 12).date(), 
         datetime(2024, 8, 19).date(), datetime(2024, 8, 26).date(), datetime(2024, 9, 9).date(), 
@@ -205,7 +205,7 @@ with DAG(
     'fieldglass_weekly_staging_dag',
     default_args=default_args,
     description='DAG to load file to Snowflake from SFTP',
-    schedule_interval='30 10 * * *',
+    schedule_interval='15 8 * * *',
     catchup=False,
 ) as dag:
     WDcheck = ShortCircuitOperator(
