@@ -178,7 +178,7 @@ def download_file_from_sftp():
     response = client.get_secret_value(SecretId='arn:aws:secretsmanager:us-east-1:573491702041:secret:a206529-MDS-CONSREVENUE-5k48RX', VersionStage='AWSCURRENT')
 
     secrets=json.loads(response['SecretString'])
-    print(secrets)
+    # print(secrets)
     # Establish a connection to your Snowflake instance
     conn = snowflake.connector.connect(
         user=str(secrets["user"]),
@@ -232,7 +232,7 @@ with DAG(
         response = client.get_secret_value(SecretId='arn:aws:secretsmanager:us-east-1:573491702041:secret:a206529-MDS-CONSREVENUE-5k48RX', VersionStage='AWSCURRENT')
 
         secrets=json.loads(response['SecretString'])
-        print(secrets)
+        # print(secrets)
         try:
             conn = snowflake.connector.connect(
                 user=str(secrets["user"]),
